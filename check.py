@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManage
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
@@ -23,8 +24,13 @@ def send_telegram(message):
 # =========================
 # Start Browser
 # =========================
-service = Service("chromedriver.exe")
-driver = webdriver.Chrome(service=service)
+options = Options()
+options.add_argument("--headless")
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-dev-shm-usage")
+options.add_argument("--disable-gpu")
+
+driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 wait = WebDriverWait(driver, 20)
 
 # =========================
@@ -106,4 +112,5 @@ while True:
 
     except Exception as e:
         print("Error:", e)
+
         time.sleep(30)
